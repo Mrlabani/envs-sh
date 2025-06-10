@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF‑8"><title>envs.sh Uploader</title></head>
+<body>
+<h2>🔼 Upload to envs.sh</h2>
+<input type="file" id="file"><br>
+<input type="url" id="url" placeholder="Or paste a URL"><br>
+<label><input type="checkbox" id="secret"> Secret URL</label><br>
+<button onclick="upload()">Upload</button>
+<pre id="out"></pre>
+<script>
+  async function upload() {
+    const file = document.getElementById('file').files[0];
+    const url = document.getElementById('url').value;
+    const secret = document.getElementById('secret').checked;
+    const form = new FormData();
+    if (file) form.append('file', file);
+    else if (url) form.append('url', url);
+    if (secret) form.append('secret', '');
+    const res = await fetch('/api/upload', { method: 'POST', body: form });
+    document.getElementById('out').textContent = await res.text();
+  }
+</script>
+</body>
+</html>
